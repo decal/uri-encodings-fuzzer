@@ -5,7 +5,7 @@
 # Authored by Derek Callaway [ decal (AT) sdf {D0T} org ]
 # Wed Jun 29 09:25:12 EDT 2016
 #
-# https://github.com/decal/uri-fuzz-encodings
+# https://github.com/decal/uri-encodings-fuzzer
 #
 
 package URI::Fuzz;

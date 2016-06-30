@@ -63,9 +63,7 @@ foreach my $j (@$ps) {
 	LOOP: foreach my $k (permute(@$j)) {
 		my $u = $u2;
 
-		foreach $_ (@$k) {
-      $u = &$_($u);
-    }
+		foreach $_ (@$k) { $u = &$_($u); }
 
 		map { $u = &$_($u) } @$k;
 

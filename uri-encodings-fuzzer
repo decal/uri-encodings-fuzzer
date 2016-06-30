@@ -22,7 +22,7 @@ sub show_usage {
   # Note that the URI must have characters after the slash following the host
   print(STDOUT "\nusage: $0 URI\n");
   print(STDOUT " URI  resource string to fuzz with percent encodings\n");
-  print(STDOUT "ex. $0 http://decal.sdf.org/login.php?user=test#anchor\n\n");
+  print(STDOUT "ex. $0 http://login.windows.net/login.aspx?user=test#anchor\n\n");
   
   exit 0x40;
 }

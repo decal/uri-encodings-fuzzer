@@ -1,0 +1,84 @@
+#!/usr/bin/env perl
+#
+# URI Encodings Fuzzer
+# Dependencies: Libwhisker, List::PowerSet, Math::Combinatorics
+# Authored by Derek Callaway [ decal (AT) sdf {D0T} org ]
+# Wed Jun 29 09:25:12 EDT 2016
+#
+# https://github.com/decal/uri-fuzz-encodings
+#
+
+package URI::Fuzz;
+
+use strict;
+use warnings;
+
+use LW2;
+use List::PowerSet qw(powerset powerset_lazy);
+use List::Util qw(shuffle); 
+uase Math::Combinatorics qw(permute);
+ 
+sub show_usage {  
+  # Note that the URI must have characters after the slash following the host
+  print(STDOUT "\nusage: $0 URI\n");
+  print(STDOUT " URI  resource string to fuzz with percent encodings\n");
+  print(STDOUT "ex. $0 http://decal.sdf.org/login.php?user=test#anchor\n\n");
+  
+  exit 0x40;
+}
+
+&show_usage() if not @ARGV;
+
+sub scramble_query { 
+	my $s = shift @_;
+}
+
+sub scramble_path {
+	my $s = shift @_;
+	my $n = rindex $s, q'/';
+	my $r = substr $s, 0, $n;
+	$r .= join '', shuffle split m||, substr $s, $n;
+
+	return $r
+}
+
+sub url_decode {
+	my $s = $_[0];
+
+	$s =~ s/\%([A-Fa-f0-9]{2})/pack('C', hex($1))/seg;
+
+	return $s;
+}
+
+my $ps = powerset( ( \&LW2::encode_uri_hex, 
+		\&LW2::encode_uri_randomhex, \&LW2::encode_anti_ids, 
+		\&LW2::encode_unicode, \&LW2::encode_uri_randomcase ) );
+
+my $url = $ARGV[0];
+my $i = index($url, q'/', index($url, q'/', index($url, q'/') + 1) + 1);
+my($x, $u1) = (qq!!, substr($url, 0, ++$i));
+my $u2 = substr($url, $i);
+
+foreach my $j (@$ps) {
+	LOOP: foreach my $k (permute(@$j)) {
+		my $u = $u2;
+
+		foreach $_ (@$k) {
+      $u = &$_($u);
+    }
+
+		map { $u = &$_($u) } @$k;
+
+		next LOOP if !(defined($u) and length($u) and (defined $u1 and length $u1));
+	
+		$x = $u1 . ($u = substr $u, 0, 1 + length($u));
+		$x = &url_decode($x);
+
+		# print(STDERR (@r . "\n"));
+		print(STDOUT "$x\n");
+
+		srand time and select undef, undef, undef, rand 0.00002;
+	}
+}
+
+exit 0;

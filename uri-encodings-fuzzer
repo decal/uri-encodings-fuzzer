@@ -16,7 +16,7 @@ use warnings;
 use LW2;
 use List::PowerSet qw(powerset powerset_lazy);
 use List::Util qw(shuffle); 
-uase Math::Combinatorics qw(permute);
+use Math::Combinatorics qw(permute);
  
 sub show_usage {  
   # Note that the URI must have characters after the slash following the host

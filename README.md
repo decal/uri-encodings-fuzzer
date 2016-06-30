@@ -10,5 +10,11 @@ encoding subroutines to the URI provided on the command line:
 * `encode_unicode`
 * `encode_uri_randomcase`
 
-http://github.com/decal/uri-encodings-fuzzer
+You may need to `cpan install` the following [CPAN](http://search.cpan.org) 
+module prerequisites: 
+
+* `List::PowerSet`
+* `Math::Combinatorics`
+
+[URI Encodings Fuzzer GitHub repository](http://github.com/decal/uri-encodings-fuzzer)
 
